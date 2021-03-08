@@ -12,7 +12,7 @@ import {
   To,
   Transition,
   createMemoryHistory,
-  parsePath
+  parsePath,
 } from 'history';
 
 const readOnly: <T extends unknown>(obj: T) => T = __DEV__
@@ -67,7 +67,7 @@ export type Navigator = Omit<
 >;
 
 const LocationContext = React.createContext<LocationContextObject>({
-  static: false
+  static: false,
 });
 
 interface LocationContextObject {
@@ -85,7 +85,7 @@ const RouteContext = React.createContext<RouteContextObject>({
   outlet: null,
   params: readOnly<Params>({}),
   pathname: '',
-  route: null
+  route: null,
 });
 
 interface RouteContextObject {
@@ -117,7 +117,7 @@ export interface MemoryRouterProps {
 export function MemoryRouter({
   children,
   initialEntries,
-  initialIndex
+  initialIndex,
 }: MemoryRouterProps): React.ReactElement {
   let historyRef = React.useRef<MemoryHistory>();
   if (historyRef.current == null) {
@@ -127,7 +127,7 @@ export function MemoryRouter({
   let history = historyRef.current;
   let [state, setState] = React.useState({
     action: history.action,
-    location: history.location
+    location: history.location,
   });
 
   React.useLayoutEffect(() => history.listen(setState), [history]);
@@ -204,7 +204,7 @@ export interface RouteProps {
  * @see https://reactrouter.com/api/Route
  */
 export function Route({
-  element = <Outlet />
+  element = <Outlet />,
 }: RouteProps): React.ReactElement | null {
   return element;
 }
@@ -231,7 +231,7 @@ export function Router({
   action = Action.Pop,
   location,
   navigator,
-  static: staticProp = false
+  static: staticProp = false,
 }: RouterProps): React.ReactElement {
   invariant(
     !useInRouterContext(),
@@ -260,7 +260,7 @@ export interface RoutesProps {
  */
 export function Routes({
   basename = '',
-  children
+  children,
 }: RoutesProps): React.ReactElement | null {
   let routes = createRoutesFromChildren(children);
   return useRoutes_(routes, basename);
@@ -298,7 +298,7 @@ export function useBlocker(blocker: Blocker, when = true): void {
           // this block if the transition is cancelled for some reason.
           unblock();
           tx.retry();
-        }
+        },
       };
 
       blocker(autoUnblockingTx);
@@ -493,7 +493,7 @@ export function useRoutes(
   );
 
   let routes = React.useMemo(() => createRoutesFromArray(partialRoutes), [
-    partialRoutes
+    partialRoutes,
   ]);
 
   return useRoutes_(routes, basename);
@@ -506,7 +506,7 @@ function useRoutes_(
   let {
     route: parentRoute,
     pathname: parentPathname,
-    params: parentParams
+    params: parentParams,
   } = React.useContext(RouteContext);
 
   if (__DEV__) {
@@ -533,7 +533,7 @@ function useRoutes_(
   let matches = React.useMemo(() => matchRoutes(routes, location, basename), [
     location,
     routes,
-    basename
+    basename,
   ]);
 
   if (!matches) {
@@ -550,7 +550,7 @@ function useRoutes_(
           outlet,
           params: readOnly<Params>({ ...parentParams, ...params }),
           pathname: joinPaths([basename, pathname]),
-          route
+          route,
         }}
       />
     );
@@ -576,7 +576,7 @@ export function createRoutesFromArray(
     let route: RouteObject = {
       path: partialRoute.path || '/',
       caseSensitive: partialRoute.caseSensitive === true,
-      element: partialRoute.element || <Outlet />
+      element: partialRoute.element || <Outlet />,
     };
 
     if (partialRoute.children) {
@@ -621,7 +621,7 @@ export function createRoutesFromChildren(
       // Default behavior is to just render the element that was given. This
       // permits people to use any element they prefer, not just <Route> (though
       // all our official examples and docs use <Route> for clarity).
-      element
+      element,
     };
 
     if (element.props.children) {
@@ -841,7 +841,7 @@ function matchRouteBranch(
       {
         path: route.path,
         caseSensitive: route.caseSensitive,
-        end: i === routes.length - 1
+        end: i === routes.length - 1,
       },
       remainingPathname
     );
@@ -854,7 +854,7 @@ function matchRouteBranch(
     matches.push({
       route,
       pathname: matchedPathname,
-      params: readOnly<Params>(matchedParams)
+      params: readOnly<Params>(matchedParams),
     });
   }
 
