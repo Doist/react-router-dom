@@ -10,6 +10,7 @@ jobs:
         node: ['10.x', '12.x', '14.x']
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
+    timeout-minutes: 60
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
